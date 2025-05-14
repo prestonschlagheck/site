@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import ExperienceSection from './components/ExperienceSection';
+import ContactSection from './components/ContactSection';
+import Footer from './components/Footer';
+import Navigation from './components/Navigation';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -340,29 +344,43 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-0 relative">
-      {/* Binary grid background */}
-      <div 
-        ref={containerRef}
-        className="binary-grid-container"
-      >
-        {gridElements}
-      </div>
-
-      {/* Content with adjusted text sizes */}
-      <div className="z-10 text-center px-4 max-w-3xl">
-        <h1 className="text-7xl md:text-9xl font-bold mb-8 tracking-tight drop-shadow-lg">
-          Preston Schlagheck
-        </h1>
-        <div className="space-y-4">
-          <p className="opacity-80 drop-shadow-lg text-[11px] md:text-xs">
-            Finance & Computer Science Student at University of South Carolina, Darla Moore School of Business
-          </p>
-          <p className="opacity-70 drop-shadow-lg text-[10px] md:text-xs">
-            Guilford, Connecticut, United States
-          </p>
+    <>
+      <Navigation />
+      <div className="content-section">
+        {/* Binary grid background */}
+        <div 
+          ref={containerRef}
+          className="binary-grid-container"
+        >
+          {gridElements}
         </div>
+
+        {/* Hero section */}
+        <main className="flex min-h-screen flex-col items-center justify-center p-0 relative">
+          <div className="z-10 text-center px-4 max-w-3xl">
+            <h1 className="text-7xl md:text-9xl font-bold mb-8 tracking-tight drop-shadow-lg">
+              Preston Schlagheck
+            </h1>
+            <div className="space-y-4">
+              <p className="opacity-80 drop-shadow-lg text-[11px] md:text-xs">
+                Finance & Computer Science Student at University of South Carolina, Darla Moore School of Business
+              </p>
+              <p className="opacity-70 drop-shadow-lg text-[10px] md:text-xs">
+                Guilford, Connecticut, United States
+              </p>
+            </div>
+          </div>
+        </main>
+
+        {/* Experience section */}
+        <ExperienceSection />
+
+        {/* Contact section */}
+        <ContactSection />
+
+        {/* Footer */}
+        <Footer />
       </div>
-    </main>
+    </>
   );
 }

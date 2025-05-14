@@ -26,10 +26,23 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Preston Schlagheck | Finance & Computer Science Portfolio",
-  description: "Finance & Computer Science Student at University of South Carolina, Darla Moore School of Business",
-  keywords: ["finance", "computer science", "portfolio", "student", "University of South Carolina"],
+  description: "Finance & Computer Science Student at University of South Carolina's Darla Moore School of Business. Based in Guilford, Connecticut.",
+  keywords: ["finance", "computer science", "portfolio", "student", "University of South Carolina", "Preston Schlagheck", "Darla Moore School of Business"],
   authors: [{ name: "Preston Schlagheck" }],
   robots: "index, follow",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://prestonschlagheck.com/",
+    title: "Preston Schlagheck | Finance & CS Portfolio",
+    description: "Finance & Computer Science Student at University of South Carolina",
+    siteName: "Preston Schlagheck Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Preston Schlagheck | Finance & CS Portfolio",
+    description: "Finance & Computer Science Student at University of South Carolina",
+  },
 };
 
 export default function RootLayout({
@@ -40,8 +53,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <meta name="theme-color" content="#161616" />
       </head>
       <body
         className={`${geist.variable} ${playfair.variable} ${inter.variable} antialiased`}
