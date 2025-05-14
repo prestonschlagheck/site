@@ -17,10 +17,12 @@ export default function Home() {
       const width = window.innerWidth;
       const height = window.innerHeight;
       
-      // Set character size to 10px
+      // Set character size to 10px - ensure it's consistent
       const charSize = 10;
-      const columns = Math.ceil(width / charSize);
-      const rows = Math.ceil(height / charSize);
+      
+      // Make sure we have whole numbers for grid dimensions
+      const columns = Math.floor(width / charSize);
+      const rows = Math.floor(height / charSize);
       
       // Store grid dimensions for animation use
       gridInfoRef.current = { columns, rows };
@@ -29,10 +31,20 @@ export default function Home() {
       const totalCells = columns * rows;
       
       for (let i = 0; i < totalCells; i++) {
+        // Calculate row and column for this index
+        const row = Math.floor(i / columns);
+        const col = i % columns;
+        
         // Randomly generate 0 or 1
         const binary = Math.random() > 0.5 ? '0' : '1';
         cells.push(
-          <div key={i} className="binary" data-index={i}>
+          <div 
+            key={i} 
+            className="binary" 
+            data-index={i}
+            data-row={row}
+            data-column={col}
+          >
             {binary}
           </div>
         );
@@ -57,7 +69,13 @@ export default function Home() {
       generateBinaryGrid();
     };
     
+    // Handle orientation changes on mobile
+    const handleOrientationChange = () => {
+      setTimeout(handleResize, 100);
+    };
+    
     window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleOrientationChange);
     
     // Copy the ref value to a variable for the cleanup function
     const activePositionsRefValue = activePositionsRef.current;
@@ -65,6 +83,7 @@ export default function Home() {
     
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleOrientationChange);
       if (animationFrameRefValue) {
         cancelAnimationFrame(animationFrameRefValue);
       }
@@ -104,8 +123,12 @@ export default function Home() {
     // Create drops in random columns
     for (let i = 0; i < numInitialDrops; i++) {
       const column = availableColumns[i];
+      
+      // Ensure column is a whole number
+      const safeColumn = Math.floor(column);
+      
       rainDrops.push({
-        column,
+        column: safeColumn,
         position: Math.floor(Math.random() * rows), // Random starting position
         length: Math.floor(Math.random() * 16) + 5, // Length 5-20 (varied length)
         speed: Math.random() * 100 + 80, // Update every 80-180ms
@@ -204,14 +227,17 @@ export default function Home() {
             }
           }
           
-          // Add current position to track
-          drop.lastPositions.unshift(drop.position);
+          // Add current position to track - ensure they're strictly row positions
+          // This ensures vertical movement only
+          const currentPosition = Math.floor(drop.position);
+          drop.lastPositions.unshift(currentPosition);
           
           // Draw this drop with appropriate fade effect
           for (let j = 0; j < Math.min(drop.length, drop.lastPositions.length); j++) {
             const pos = drop.lastPositions[j];
             if (pos >= 0 && pos < rows) {
-              const cellIndex = pos * columns + drop.column;
+              // Ensure we use the exact column for strict vertical movement
+              const cellIndex = Math.floor(pos) * columns + Math.floor(drop.column);
               const cell = containerRef.current?.querySelector(`[data-index="${cellIndex}"]`) as HTMLDivElement;
               
               if (cell) {
